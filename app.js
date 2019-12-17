@@ -173,7 +173,7 @@ function closingprompts() {
             </html>`
             fs.appendFile('index.html', htmlend, (err) => {
                 if (err) throw err;
-                console.log("Empolyee submissions complete.")
+                console.log("Empolyee submissions entered. HTML document complete.")
               });
         }
     });
