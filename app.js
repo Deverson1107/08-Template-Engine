@@ -28,12 +28,10 @@ const basehtml =`
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <title>Team Profile Generator</title>
 </head>
-<body>
+<body style="background-color: darkgrey;">
     <h1 class="col-12 py-4 display-4 text-center my-4" style= "background-color:black; color: white";>My Team</h1>
-    <div class="row">    
-    </div>  
-</body>
-</html>`;
+    <div class="row px-5 mx-5 justify-content-center">    
+    `;
 fs.writeFile('index.html', basehtml, (err) => {
     if (err) throw err;
   });
@@ -118,7 +116,7 @@ function closingprompts() {
         else {
             for (i = 0; i < Managers.length; i++) {
                 var newcard = `
-                <div class="card" style="width: 18rem;">
+                <div class="card col-3 mx-3 my-3" style="width: 18rem;">
                     <div class="card-body" style= "background-color:black; color: white">
                         <h5 class="card-title text-center">${Managers[i].name}</h5>
                         <p class="card-text text-center">${Managers[i].position}</p>
@@ -131,13 +129,52 @@ function closingprompts() {
                 </div>`
                 fs.appendFile('index.html', newcard, (err) => {
                     if (err) throw err;
-                    console.log('Managers were appended to html document.');
+                    console.log('Manager card was appended to html document.');
                   });
             }
-            console.log(Managers);
-            console.log(Engineers);
-            console.log(Interns);
-            console.log("Empolyee submissions complete.")
+            for (i = 0; i < Engineers.length; i++) {
+                var newcard = `
+                <div class="card col-3 mx-3 my-3" style="width: 18rem;">
+                    <div class="card-body" style= "background-color:black; color: white">
+                        <h5 class="card-title text-center">${Engineers[i].name}</h5>
+                        <p class="card-text text-center">${Engineers[i].position}</p>
+                </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">ID: ${Engineers[i].ID}</li>
+                        <li class="list-group-item">EMAIL: ${Engineers[i].email}</li>
+                        <li class="list-group-item">GITHUB PROFILE: ${Engineers[i].github}</li>
+                    </ul>
+                </div>`
+                fs.appendFile('index.html', newcard, (err) => {
+                    if (err) throw err;
+                    console.log('Engineer card was appended to html document.');
+                  });
+            }
+            for (i = 0; i < Interns.length; i++) {
+                var newcard = `
+                <div class="card col-3 mx-3 my-3" style="width: 18rem;">
+                    <div class="card-body" style= "background-color:black; color: white">
+                        <h5 class="card-title text-center">${Interns[i].name}</h5>
+                        <p class="card-text text-center">${Interns[i].position}</p>
+                </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">ID: ${Interns[i].ID}</li>
+                        <li class="list-group-item">EMAIL: ${Interns[i].email}</li>
+                        <li class="list-group-item">SCHOOL: ${Interns[i].school}</li>
+                    </ul>
+                </div>`
+                fs.appendFile('index.html', newcard, (err) => {
+                    if (err) throw err;
+                    console.log('Intern card was appended to html document.');
+                  });
+            }
+            var htmlend = `</div>  
+            </body>
+            </html>`
+            fs.appendFile('index.html', htmlend, (err) => {
+                if (err) throw err;
+                console.log("Empolyee submissions complete.")
+              });
         }
     });
 };
