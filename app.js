@@ -3,76 +3,77 @@ const jest = require("jest");
 const util = require("util");
 const fs = require("fs");
 
-const writeFileAsync = util.promisify(fs.writeFile);
+//const writeFileAsync = util.promisify(fs.writeFile);
 
-//const Manager = require(".lib/Manager");
-//const Intern = require(".lib/Intern");
-//const Engineer = require(".lib/Engineer");
+const Employee = require("./lib/Employee");
+const Manager = require("./lib/Manager");
+const Engineer = require("./lib/Engineer");
+const Intern = require("./lib/Intern");
 
 var ID = 0;
+const Managers = [];
+const Engineers = [];
+const Interns = [];
 
-function promptuser() {
-    return inquirer.prompt([
-        {
-        message: "Please enter employee name:",
-        name: "employeeName"
-        },
-        {
-        type: "list",
-        message: "Please choose employee position:",
-        choices: ['Manager', 'Engineer', 'Intern'],
-        name: "position"
-        },
-        {
-        message: "Please enter employee email:",
-        name: "email"
-        },
-        //{
-        //type: "list",   
-        //message: "Enter additional employees?",
-        //choices: ['Yes', 'No'],
-        //name: "continue"
-        //}
-    ])
-    .then(function(answers){
-        var employeeName = answers.employeeName;
 
-        var position = answers.position;
-        if (position === "Manager") {
-            return inquirer.prompt({
+var promptForBasicInfo = function () {
+    inquirer.prompt(
+        [
+            {
+                message: "Please enter employee name:",
+                name: "employeeName"
+            },
+            {
+                type: "list",
+                message: "Please choose employee position:",
+                choices: ['Manager', 'Engineer', 'Intern'],
+                name: "position"
+            },
+            {
+                message: "Please enter employee email:",
+                name: "email"
+            },
+            {
                 message: "Please enter office number:",
-                name: "info"
-            });
-        }
-        else if (position === "Engineer") {
-            return inquirer.prompt({
-                message: "Please enter Github profile name:",
-                name: "info"
-            });
-        }
-        else if (position === "Intern") {
-            return inquirer.prompt({
+                name: "officeNumber",
+                when: (answers) => answers.position === 'Manager'
+            },
+            {
+                message: "Please enter github profile name:",
+                name: "profileName",
+                when: (answers) => answers.position === 'Engineer'
+            },
+            {
                 message: "Please enter school name:",
-                name: "info"
-            })
+                name: "profileName",
+                when: (answers) => answers.position === 'Intern'
+            },
+        ]
+    ).then(
+        function(answers)
+        {
+            ID++;
+            if (answers.position === 'Manager') {
+                var manager = new Manager(ID, answers.employeeName, answers.email, answers.officeNumber);
+                Managers.push(manager);
+            }
+            if (answers.position === 'Engineer') {
+                var manager = new Engineer(ID, answers.employeeName, answers.email, answers.github);
+                Managers.push(engineer);
+            }
+            if (answers.position === 'Intern') {
+                var manager = new Intern(ID, answers.employeeName, answers.email, answers.school);
+                Managers.push(intern);
+            }
         }
-        var info = answers.info;
-        var email = answers.email;
-        ID++;
-        console.log("Employee Name: " + employeeName);
-        console.log("ID: " + ID);
-        console.log("Position: " + position);
-        console.log("Info: " + info);
-        console.log("Employee Email: " + email);
-        //if (answers.continue === "Yes") {
-        //   promptuser();
-        //}
-        //else {
-        //    console.log("Employee submissions complete.");
-        //}
-    })
+    );
 }
 
+   
+function promptuser() {
+    promptForBasicInfo();
+};
+  
 function generateHTML(answers) {
     return `
     <!DOCTYPE html>
